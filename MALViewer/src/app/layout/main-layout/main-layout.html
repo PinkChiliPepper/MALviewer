@@ -1,3 +1,15 @@
-<app-menu></app-menu>
-<p>main-layout works!</p>
-<router-outlet></router-outlet>
+<div
+  [ngStyle]="{
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }"
+>
+  <div
+    [ngStyle]="{ width: '100%', maxWidth: '1980px', border: 'red solid 1px' }"
+  >
+    <app-menu></app-menu>
+    <router-outlet></router-outlet>
+  </div>
+</div>
