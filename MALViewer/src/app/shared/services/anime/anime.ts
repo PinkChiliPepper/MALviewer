@@ -17,4 +17,12 @@ export class Anime {
       map(response => response.data)
     );
   }
+
+  getCurrentSeason(): Observable<AnimeItem[]> {
+    console.log('!!')
+    return this.http.get<{ data: AnimeItem[] }>(`${this.baseUrl}/seasons/now`).pipe(
+      map(response => response.data)
+    );
+  }
+
 }

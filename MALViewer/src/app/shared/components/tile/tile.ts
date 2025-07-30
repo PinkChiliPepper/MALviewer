@@ -7,6 +7,6 @@ import { Component, Input } from '@angular/core';
   styleUrl: './tile.scss'
 })
 export class Tile {
-  @Input() name: string = 'test'
-  @Input() src: string = 'test'
+  @Input() name: string = ''
+  @Input() src: string = ''
 }

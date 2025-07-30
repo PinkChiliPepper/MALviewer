@@ -1,16 +1,2 @@
-<p>home works!</p>
-
-<div
-  [ngStyle]="{
-    display: 'flex',
-    flexDirection: 'row',
-    gap: '1rem',
-    flexWrap: 'wrap'
-  }"
->
-  @for (anime of topAnime(); track anime.mal_id) {
-  <app-tile [name]="anime.title_english" [src]="anime.images.jpg.image_url" />
-  } @empty {
-  <li>There are no anime.</li>
-  }
-</div>
+<app-tile-list title="Top anime" [tiles]="topAnime()" />
+<app-tile-list title="Current season" [tiles]="currentSeason()" />
