@@ -1,9 +1,16 @@
 <p>home works!</p>
 
-@for (anime of topAnime(); track anime.mal_id) {
-<app-tile [name]="anime.title_english" [src]="anime.images.jpg.image_url">
-  {{ anime.title_english }}
-</app-tile>
-} @empty {
-<li>There are no anime.</li>
-}
+<div
+  [ngStyle]="{
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '1rem',
+    flexWrap: 'wrap'
+  }"
+>
+  @for (anime of topAnime(); track anime.mal_id) {
+  <app-tile [name]="anime.title_english" [src]="anime.images.jpg.image_url" />
+  } @empty {
+  <li>There are no anime.</li>
+  }
+</div>
