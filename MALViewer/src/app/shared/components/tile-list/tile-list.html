@@ -1,6 +1,8 @@
-<div class="tile-box">
-  <div class="title" {{ title }}></div>
-  @for (tile of tiles; track tile.mal_id) {
-  <app-tile [name]="tile.title_english" [src]="tile.images.jpg.image_url" />
-  }
+<div class="container">
+  <div class="list-title">{{ title }}</div>
+  <div class="tile-box">
+    @for (tile of tiles; track tile.mal_id) {
+    <app-tile [name]="tile.title_english" [src]="tile.images.jpg.image_url" />
+    }
+  </div>
 </div>

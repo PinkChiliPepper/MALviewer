@@ -12,17 +12,25 @@ export class Anime {
   constructor(private http: HttpClient) {}
 
   getTopAnime(): Observable<AnimeItem[]> {
-    console.log('!!')
     return this.http.get<{ data: AnimeItem[] }>(`${this.baseUrl}/top/anime`).pipe(
-      map(response => response.data)
+      map(response => this.filterUniqueByMalId(response.data))
     );
   }
 
   getCurrentSeason(): Observable<AnimeItem[]> {
-    console.log('!!')
     return this.http.get<{ data: AnimeItem[] }>(`${this.baseUrl}/seasons/now`).pipe(
-      map(response => response.data)
+      map(response => this.filterUniqueByMalId(response.data))
     );
+  }
+
+  private filterUniqueByMalId(items: AnimeItem[]): AnimeItem[] {
+    const seen = new Set<number>();
+    return items.filter(item => {
+      if (seen.has(item.mal_id)) return false;
+      seen.add(item.mal_id);
+      return true;
+  });
+
   }
 
 }

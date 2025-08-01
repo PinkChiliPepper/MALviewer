@@ -1,7 +1,28 @@
+.container {
+  display: 'flex';
+  flex-direction: 'column';
+}
+
+.list-title {
+  font-size: 1.25rem;
+  color: darkmagenta;
+  padding: 6px 12px;
+  font-weight: 500;
+}
+
 .tile-box {
   display: flex;
   flex-direction: row;
   width: 100%;
   flex-wrap: nowrap;
-  overflow: scroll
+  overflow-x: scroll;
+  border-radius: 12px;
+  background-color: #0d1017;
+  padding: 8px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
 }
