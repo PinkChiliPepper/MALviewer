@@ -2,7 +2,12 @@
   <div class="list-title">{{ title }}</div>
   <div class="tile-box">
     @for (tile of tiles; track tile.mal_id) {
-    <app-tile [name]="tile.title_english" [src]="tile.images.jpg.image_url" />
+    <app-tile
+      [name]="tile.title_english"
+      [japaneseName]="tile.title_japanese"
+      [score]="tile.score"
+      [src]="tile.images.jpg.image_url"
+    />
     }
   </div>
 </div>

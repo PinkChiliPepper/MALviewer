@@ -8,5 +8,7 @@ import { Component, Input } from '@angular/core';
 })
 export class Tile {
   @Input() name: string = ''
+  @Input() japaneseName: string = ''
   @Input() src: string = ''
+  @Input() score: number = 0
 }
