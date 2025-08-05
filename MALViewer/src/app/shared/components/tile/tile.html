@@ -1,14 +1,19 @@
 <div class="tile">
   <div style="display: flex; flex-direction: row; justify-content: flex-end">
     <div class="score">
-      {{ score }}
+      {{ anime?.score }}
     </div>
   </div>
-  <div class="image">
-    <img src="{{ src }}" alt="{{ name }}" />
+  <div class="image glass-overlay">
+    <a href="{{ watchLink }}" target="_blank">
+      <img
+        src="{{ anime?.images?.jpg?.image_url }}"
+        alt="{{ anime?.title_english }}"
+      />
+    </a>
   </div>
   <div style="padding: 4px 0px">
-    <div class="title">{{ name }}</div>
-    <div class="subtitle">{{ japaneseName }}</div>
+    <div class="title">{{ anime?.title_english }}</div>
+    <div class="subtitle">{{ anime?.title_japanese }}</div>
   </div>
 </div>

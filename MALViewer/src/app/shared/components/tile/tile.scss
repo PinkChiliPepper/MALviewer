@@ -24,6 +24,12 @@
     height: 300px;
     width: 225px;
     overflow: hidden;
+
+    &:hover {
+        img {
+          filter: blur(3px);
+        }
+      }
   }
 
   .title {
