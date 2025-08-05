@@ -15,8 +15,6 @@ export class Tile {
   watchLink: string = '';
 
   ngOnInit(): void {
-    console.log(this.anime);
-
     if (this.anime) {
       this.linkName = this.anime.title_english?.toLowerCase().replace(/\s+/g, '-') ?? '';
       this.watchLink = `${this.baseWatchLink}${this.linkName}+episode 1`;

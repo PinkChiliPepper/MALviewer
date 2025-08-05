@@ -1,7 +1,5 @@
-import { NgStyle } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Tile } from '@components/tile/tile';
 import { Anime } from '@shared/services/anime/anime';
 import { TileList } from "@shared/components/tile-list/tile-list";
 

@@ -1,0 +1,11 @@
+@use 'colors' as *;
+
+h1 {
+  color: $color-5;
+  font-size: 3.5rem;
+  font-weight: 700;
+
+  strong {
+    color: $color-3;
+  }
+}
