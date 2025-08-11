@@ -1,0 +1,21 @@
+<div class="tile">
+  <div style="display: flex; flex-direction: row; justify-content: flex-end">
+    <div class="score">
+      {{ anime?.score }}
+    </div>
+  </div>
+  <div class="image glass-overlay">
+    <a href="{{ watchLink }}" target="_blank">
+      <img
+        src="{{ anime?.images?.jpg?.image_url }}"
+        alt="{{ anime?.title_english }}"
+      />
+    </a>
+  </div>
+  <div style="padding: 4px 0px">
+    <div class="title">
+      {{ anime?.title_english ?? anime?.title_synonyms?.[0] }}
+    </div>
+    <div class="subtitle">{{ anime?.title_japanese }}</div>
+  </div>
+</div>

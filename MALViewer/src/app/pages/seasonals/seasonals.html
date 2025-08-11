@@ -1,0 +1,6 @@
+@for (day of orderedDays(); track day) {
+<app-tile-list
+  [title]="day.charAt(0).toUpperCase() + day.slice(1)"
+  [tiles]="currentSeasonSchedules[day]?.() ?? []"
+/>
+}

@@ -1,0 +1,21 @@
+@use 'colors' as *;
+
+.menu {
+  position: sticky;
+  top: 0;
+  display: flex;
+  gap: 5rem;
+  padding: 1rem 0%;
+  z-index: 1000;
+
+  a {
+    text-decoration: none;
+    color: $color-2;
+    font-size: 1.5rem;
+    font-weight: 500;
+
+    &:hover {
+      color: $color-2-light;
+    }
+  }
+}

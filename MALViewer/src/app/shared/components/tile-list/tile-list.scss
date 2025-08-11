@@ -1,0 +1,32 @@
+@use 'colors' as *;
+
+.container {
+  display: 'flex';
+  flex-direction: 'column';
+}
+
+.list-title {
+  font-size: 1.4rem;
+  color: $color-3;
+  padding: 12px 0px;
+  font-weight: 500;
+}
+
+.tile-box {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 1rem;
+
+  width: 100%;
+  overflow-x: scroll;
+  border-radius: 12px;
+  background-color: $color-1-light;
+  padding: 8px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+}
