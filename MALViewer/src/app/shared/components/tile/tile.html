@@ -13,7 +13,9 @@
     </a>
   </div>
   <div style="padding: 4px 0px">
-    <div class="title">{{ anime?.title_english }}</div>
+    <div class="title">
+      {{ anime?.title_english ?? anime?.title_synonyms?.[0] }}
+    </div>
     <div class="subtitle">{{ anime?.title_japanese }}</div>
   </div>
 </div>

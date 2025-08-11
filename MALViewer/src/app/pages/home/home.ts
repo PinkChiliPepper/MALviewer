@@ -20,6 +20,4 @@ export class Home {
     const currentSeason$ = this.animeService.getCurrentSeason();
     this.currentSeason = toSignal(currentSeason$, { initialValue: [] });
   }
-
-  items: { name: string }[] = [{ name: 'testitem' }];
 }
