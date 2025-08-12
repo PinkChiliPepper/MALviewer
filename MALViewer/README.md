@@ -16,6 +16,8 @@ Once the server is running, open your browser and navigate to `http://localhost:
 
 `ng deploy --base-href=/MALViewer/` in main
 
+This deploys to the branch gh-pages in the root folder.
+
 ## Code scaffolding
 
 Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
