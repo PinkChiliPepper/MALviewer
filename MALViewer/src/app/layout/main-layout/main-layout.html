@@ -6,7 +6,7 @@
     alignItems: 'center'
   }"
 >
-  <div [ngStyle]="{ width: '100%', maxWidth: '1980px' }">
+  <div [ngStyle]="{ width: '100%', maxWidth: 'min(90vw, 1980px)', marginBottom: '50px'  }">
     <app-menu></app-menu>
     <router-outlet></router-outlet>
   </div>
