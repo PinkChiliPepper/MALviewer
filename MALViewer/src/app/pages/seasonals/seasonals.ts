@@ -1,4 +1,5 @@
 import { Component, Signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { TileList } from '@shared/components/tile-list/tile-list';
 import { Anime } from '@shared/services/anime/anime';
 import { AnimeItem, BroadCastDays } from '@shared/services/anime/types';
@@ -11,12 +12,14 @@ import { AnimeItem, BroadCastDays } from '@shared/services/anime/types';
   styleUrl: './seasonals.scss'
 })
 export class Seasonals {
-  currentSeasonSchedules: Partial<Record<any, Signal<AnimeItem[]>>> = {}
+  schedules: Record<string, any> = {}
 
-  constructor(private animeService: Anime) {}
+  constructor(private animeService: Anime) {
+    Object.values(BroadCastDays).forEach(day => {
+      const obs$ = this.animeService.getCurrentSeasonSchedule(day);
+      this.schedules[day] = toSignal(obs$, { initialValue: [] });
+    });
 
-  async ngOnInit() {
-    this.currentSeasonSchedules = await this.animeService.getCurrentSeasonSchedule();
   }
 
   orderedDays(): string[] {
