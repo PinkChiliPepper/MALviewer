@@ -16,10 +16,10 @@ export class TileList {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
 
   scrollLeft() {
-    this.scrollContainer.nativeElement.scrollBy({ left: -500, behavior: 'smooth' });
+    this.scrollContainer.nativeElement.scrollBy({ left: -1000, behavior: 'smooth' });
   }
 
   scrollRight() {
-    this.scrollContainer.nativeElement.scrollBy({ left: 500, behavior: 'smooth' });
+    this.scrollContainer.nativeElement.scrollBy({ left: 1000, behavior: 'smooth' });
   }
 }
