@@ -13,6 +13,18 @@ export interface AnimeItem {
     }
   }
   score: number,
+  aired: {
+    from: {
+      day: number,
+      month: number,
+      year: number,
+    }
+    to: {
+      day: number,
+      month: number,
+      year: number,
+    }
+  }
 }
 
 export enum BroadCastDays {

@@ -74,6 +74,16 @@ export class Anime {
     return filteredByScore;
   }
 
+  private filterRecent(items: AnimeItem[]): AnimeItem[] {
+  const twoYearsAgo = new Date().getFullYear() - 2;
+
+  return items.filter(item => {
+    const startYear = item.aired?.from.year;
+    if (!startYear) return false;
+    return twoYearsAgo <= startYear;
+  });
+}
+
   private retryOn429<T>(maxRetries: number) {
   return (source: Observable<T>) => source.pipe(retry({
         count: maxRetries,
@@ -87,7 +97,7 @@ export class Anime {
             const retrySec = parseInt(retryAfter, 10);
             if (!isNaN(retrySec)) return timer(retrySec * 1000);
           }
-          return timer(2000 * Math.pow(2, retryCount));
+          return timer(2000 * (2 * retryCount));
         }
       }),
       catchError(err => throwError(() => err))

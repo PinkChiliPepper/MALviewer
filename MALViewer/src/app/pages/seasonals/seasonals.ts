@@ -21,13 +21,16 @@ export class Seasonals {
     });
 
   }
+orderedDays(): string[] {
+  const days: string[] = Object.values(BroadCastDays);
+  const todayIndex = new Date().getDay();
+  const ordered: string[] = [];
 
-  orderedDays(): string[] {
-    const days: string[] = Object.values(BroadCastDays);
-    const todayIndex = new Date().getDay();
-    const yesterdayIndex = (todayIndex + 6) % 7;
-    const daysOrdered = [...days.slice(yesterdayIndex), ...days.slice(0, yesterdayIndex)];
-
-    return daysOrdered
+  for (let i = 1; i <= 7; i++) {
+    const index = (todayIndex - i + 7) % 7;
+    ordered.push(days[index]);
   }
+
+  return ordered;
+}
 }
