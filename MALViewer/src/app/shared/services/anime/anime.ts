@@ -1,8 +1,8 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AnimeItem, BroadCastDays } from '@shared/services/anime/types';
-import { map, Observable, retry, shareReplay } from 'rxjs';
+import { catchError, map, Observable, retry, retryWhen, shareReplay, throwError, timer } from 'rxjs';
 
 
 @Injectable({
@@ -36,24 +36,20 @@ export class Anime {
     return this.currentSeason$;
   }
 
-  private currentSeasonScheduleCache = new Map<BroadCastDays, Observable<AnimeItem[]>>();
   getCurrentSeasonSchedule(day: BroadCastDays): Observable<AnimeItem[]> {
-    if (!this.currentSeasonScheduleCache.has(day)) {
-      const params = new HttpParams()
-        .append('day', day)
-        // .append('kids', 'false');
+    const params = new HttpParams()
+      .append('filter', day)
+      .append('kids', 'false');
 
-      const schedule$ = this.http.get<{ data: AnimeItem[] }>(
-        `${this.baseUrl}/schedules`,
-        { params }
-      ).pipe(
-        retry(3),
-        map(response => this.filterAnime(response.data)),
-        shareReplay({ bufferSize: 1, refCount: false, windowTime: 5 * 60 * 1000 })
-      );
-      this.currentSeasonScheduleCache.set(day, schedule$);
-    }
-    return this.currentSeasonScheduleCache.get(day)!;
+    const schedule$ = this.http.get<{ data: AnimeItem[] }>(
+      `${this.baseUrl}/schedules`,
+      { params }
+    ).pipe(
+      this.retryOn429(5),
+      map(response => this.filterAnime(response.data)),
+      shareReplay({ bufferSize: 1, refCount: false, windowTime: 5 * 60 * 1000 })
+    );
+    return schedule$
   }
 
   private filterAnime(items: AnimeItem[]): AnimeItem[] {
@@ -73,9 +69,28 @@ export class Anime {
   }
 
   private filterByScore(items: AnimeItem[]): AnimeItem[] {
-    const filteredByScore = items.filter(item => (item.score ?? 0) > 6);
+    const filteredByScore = items.filter(item => (item.score ?? 0) > 6.5);
     filteredByScore.sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
     return filteredByScore;
   }
 
+  private retryOn429<T>(maxRetries: number) {
+  return (source: Observable<T>) => source.pipe(retry({
+        count: maxRetries,
+        delay: (error, retryCount) => {
+          if (!(error instanceof HttpErrorResponse) || error.status !== 429) {
+            return throwError(() => error);
+          }
+
+          const retryAfter = error.headers.get('Retry-After');
+          if (retryAfter) {
+            const retrySec = parseInt(retryAfter, 10);
+            if (!isNaN(retrySec)) return timer(retrySec * 1000);
+          }
+          return timer(2000 * Math.pow(2, retryCount));
+        }
+      }),
+      catchError(err => throwError(() => err))
+    );
+}
 }

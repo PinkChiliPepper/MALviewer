@@ -14,7 +14,7 @@ Once the server is running, open your browser and navigate to `http://localhost:
 
 # Uploading to GitHub pages
 
-`ng deploy --base-href=/MALViewer/` in main
+`ng deploy --base-href=/MALviewer/` in main
 
 This deploys to the branch gh-pages in the root folder.
 
