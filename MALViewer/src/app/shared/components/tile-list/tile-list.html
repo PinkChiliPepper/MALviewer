@@ -2,18 +2,14 @@
   <div class="list-title">{{ title }}</div>
 
   <div class="scroll-wrapper">
-    <button class="scroll-btn left" (click)="scrollLeft()">
-      ◀
-    </button>
+    <button class="scroll-btn left" (click)="scrollLeft()">◀</button>
 
     <div class="tile-box" #scrollContainer>
       @for (tile of tiles; track tile.mal_id) {
-        <app-tile [anime]="tile" />
+      <app-tile [anime]="tile" />
       }
     </div>
 
-    <button class="scroll-btn right" (click)="scrollRight()">
-      ▶
-    </button>
+    <button class="scroll-btn right" (click)="scrollRight()">▶</button>
   </div>
 </div>

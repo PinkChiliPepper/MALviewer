@@ -13,7 +13,7 @@ export interface AnimeItem {
     }
   }
   score: number,
-  aired: {
+  aired: { prop: {
     from: {
       day: number,
       month: number,
@@ -24,7 +24,7 @@ export interface AnimeItem {
       month: number,
       year: number,
     }
-  }
+  }}
 }
 
 export enum BroadCastDays {

@@ -1,8 +1,8 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { Injectable, Signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Injectable } from '@angular/core';
 import { AnimeItem, BroadCastDays } from '@shared/services/anime/types';
-import { catchError, map, Observable, retry, retryWhen, shareReplay, throwError, timer } from 'rxjs';
+import { cacheForFiveMinutes, retryOn429 } from '@shared/services/rxjs-operators';
+import { catchError, expand, map, Observable, of, reduce, retry, retryWhen, shareReplay, throwError, timer } from 'rxjs';
 
 
 @Injectable({
@@ -16,13 +16,29 @@ export class Anime {
   private topAnime$?: Observable<AnimeItem[]>;
   private currentSeason$?: Observable<AnimeItem[]>;
 
+
+
   getTopAnime(): Observable<AnimeItem[]> {
     if (!this.topAnime$) {
-      this.topAnime$ = this.http.get<{ data: AnimeItem[] }>(`${this.baseUrl}/top/anime`).pipe(
-        map(response => this.filterAnime(response.data)),
-        shareReplay({ bufferSize: 1, refCount: false, windowTime: 5 * 60 * 1000 })
+      const firstPageUrl = `${this.baseUrl}/top/anime?page=1`;
+
+      this.topAnime$ = this.http.get<{ data: AnimeItem[]; pagination: any }>(firstPageUrl).pipe(
+        expand((response, i) => {
+          const nextPage = response.pagination?.has_next_page && (i + 2 <= 5);
+          if (nextPage) {
+            return this.http.get<{ data: AnimeItem[]; pagination: any }>(
+              `${this.baseUrl}/top/anime?page=${i + 2}`
+            ).pipe(retryOn429(5));
+          }
+          return of();
+        }),
+        map(response => response.data),
+        reduce((all, pageData) => all.concat(pageData), [] as AnimeItem[]),
+        map(items => this.filterAnime(items)),
+        cacheForFiveMinutes(),
       );
     }
+
     return this.topAnime$;
   }
 
@@ -30,7 +46,8 @@ export class Anime {
     if (!this.currentSeason$) {
       return this.http.get<{ data: AnimeItem[] }>(`${this.baseUrl}/seasons/now`).pipe(
         map(response => this.filterAnime(response.data)),
-        shareReplay({ bufferSize: 1, refCount: false, windowTime: 5 * 60 * 1000 })
+        cacheForFiveMinutes(),
+        retryOn429(5),
       );
     }
     return this.currentSeason$;
@@ -45,9 +62,9 @@ export class Anime {
       `${this.baseUrl}/schedules`,
       { params }
     ).pipe(
-      this.retryOn429(5),
-      map(response => this.filterAnime(response.data)),
-      shareReplay({ bufferSize: 1, refCount: false, windowTime: 5 * 60 * 1000 })
+      retryOn429(5),
+      map(response => this.filterAnime(this.filterRecent(response.data))),
+      cacheForFiveMinutes(),
     );
     return schedule$
   }
@@ -78,29 +95,9 @@ export class Anime {
   const twoYearsAgo = new Date().getFullYear() - 2;
 
   return items.filter(item => {
-    const startYear = item.aired?.from.year;
+    const startYear = item.aired?.prop.from.year;
     if (!startYear) return false;
     return twoYearsAgo <= startYear;
   });
-}
-
-  private retryOn429<T>(maxRetries: number) {
-  return (source: Observable<T>) => source.pipe(retry({
-        count: maxRetries,
-        delay: (error, retryCount) => {
-          if (!(error instanceof HttpErrorResponse) || error.status !== 429) {
-            return throwError(() => error);
-          }
-
-          const retryAfter = error.headers.get('Retry-After');
-          if (retryAfter) {
-            const retrySec = parseInt(retryAfter, 10);
-            if (!isNaN(retrySec)) return timer(retrySec * 1000);
-          }
-          return timer(2000 * (2 * retryCount));
-        }
-      }),
-      catchError(err => throwError(() => err))
-    );
-}
+  }
 }
