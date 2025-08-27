@@ -1,4 +1,12 @@
 <nav class="menu">
   <a routerLink="/" routerLinkActive="active">Home</a>
   <a routerLink="/seasonals" routerLinkActive="active">Seasonals</a>
+
+  @if (auth.user(); as user) {
+  <span>Logged in as {{ user.name }}</span>
+  <button (click)="logout()">Logout</button>
+  } @else {
+  <div>{{ auth.user()?.name }}</div>
+  <button (click)="login()">Login</button>
+  }
 </nav>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Menu } from '../../shared/components/menu/menu';
 import { RouterOutlet } from '@angular/router';
+import { Menu } from '@shared/components/menu/menu';
 
 @Component({
   selector: 'app-main-layout',

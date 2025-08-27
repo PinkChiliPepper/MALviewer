@@ -12,6 +12,8 @@ import { AnimeItem } from '@shared/services/anime/types';
 export class TileList {
   @Input() title: string = ''
   @Input() tiles: AnimeItem[] = []
+  @Input() isLoading: boolean = true
+  placeholderTiles = Array(10);
 
   @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
 
