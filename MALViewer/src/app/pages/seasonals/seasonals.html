@@ -2,5 +2,6 @@
 <app-tile-list
   [title]="day.charAt(0).toUpperCase() + day.slice(1)"
   [tiles]="schedules[day]?.() ?? []"
+  [isLoading]="schedules[day]?.() === null"
 />
 }

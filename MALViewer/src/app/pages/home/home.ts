@@ -15,9 +15,9 @@ export class Home {
 
   constructor(private animeService: Anime) {
     const topAnime$ = this.animeService.getTopAnime();
-    this.topAnime = toSignal(topAnime$, { initialValue: [] });
+    this.topAnime = toSignal(topAnime$, { initialValue: null });
 
     const currentSeason$ = this.animeService.getCurrentSeason();
-    this.currentSeason = toSignal(currentSeason$, { initialValue: [] });
+    this.currentSeason = toSignal(currentSeason$, { initialValue: null });
   }
 }

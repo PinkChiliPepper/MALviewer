@@ -17,7 +17,7 @@ export class Seasonals {
   constructor(private animeService: Anime) {
     Object.values(BroadCastDays).forEach(day => {
       const obs$ = this.animeService.getCurrentSeasonSchedule(day);
-      this.schedules[day] = toSignal(obs$, { initialValue: [] });
+      this.schedules[day] = toSignal(obs$, { initialValue: null });
     });
 
   }

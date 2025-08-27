@@ -5,9 +5,13 @@
     <button class="scroll-btn left" (click)="scrollLeft()">◀</button>
 
     <div class="tile-box" #scrollContainer>
-      @for (tile of tiles; track tile.mal_id) {
+      @if (isLoading) {
+      <div style="align-self: center; justify-self: center">
+        <app-circular-loader />
+      </div>
+      } @else { @for (tile of tiles; track tile.mal_id) {
       <app-tile [anime]="tile" />
-      }
+      }}
     </div>
 
     <button class="scroll-btn right" (click)="scrollRight()">▶</button>
