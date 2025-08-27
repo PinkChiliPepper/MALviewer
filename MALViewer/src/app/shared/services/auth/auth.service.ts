@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private clientId = environment.MALClientId;
-  private redirectUri = environment.baseUrl;
+  private redirectUri = `${environment.baseUrl}/mal-auth/callback`;
   private codeVerifier = '';
 
   // https://myanimelist.net/apiconfig/references/api/v2#section/Authentication
