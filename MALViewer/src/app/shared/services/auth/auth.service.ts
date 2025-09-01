@@ -41,11 +41,12 @@ export class AuthService {
 
   async login() {
     this.codeVerifier = this.generateCodeVerifier();
+    localStorage.setItem('pkce_verifier', this.codeVerifier);
     const codeChallenge = await this.generateCodeChallenge(this.codeVerifier);
 
     const authUrl = `${this.mainAuth}?response_type=code&client_id=${this.clientId}&redirect_uri=${encodeURIComponent(this.redirectUri)}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
 
-    window.location.href = authUrl; // redirect user to MAL login
+    window.location.href = authUrl;
   }
 
   logout() {
@@ -65,11 +66,13 @@ export class AuthService {
 
   exchangeCodeForToken(code: string) {
     const body = new URLSearchParams();
+    const verifier = localStorage.getItem('pkce_verifier') ?? '';
+    console.log(verifier)
     body.set('client_id', this.clientId);
     body.set('grant_type', 'authorization_code');
     body.set('code', code);
     body.set('redirect_uri', this.redirectUri);
-    body.set('code_verifier', this.codeVerifier);
+    body.set('code_verifier', verifier);
 
     return this.http.post<any>(this.tokenEndpoint, body.toString(), {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
