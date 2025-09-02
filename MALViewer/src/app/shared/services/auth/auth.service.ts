@@ -56,11 +56,12 @@ export class AuthService {
   }
 
   fetchUserInfo(token: string) {
+    console.log('xxx')
     this.http.get('https://api.myanimelist.net/v2/users/@me', {
       headers: new HttpHeaders({ 'Authorization': `Bearer ${token}` })
     }).subscribe(user => {
       this._user.set(user);
-      console.log(user)
+      console.log('user', user)
     });
   }
 

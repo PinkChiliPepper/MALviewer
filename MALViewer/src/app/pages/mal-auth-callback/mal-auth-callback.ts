@@ -18,7 +18,7 @@ export class MALAuthCallback implements OnInit {
     this.route.queryParams.subscribe(params => {
       const code = params['code'];
       if (code) {
-        // this.auth.exchangeCodeForToken(code);
+        this.auth.exchangeCodeForToken(code);
         this.router.navigateByUrl('/');
       } else {
         this.router.navigateByUrl('/');
