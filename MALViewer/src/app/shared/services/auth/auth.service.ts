@@ -7,11 +7,13 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private clientId = environment.MALClientId;
+  private clientSecret = environment.MALSecret;
   private redirectUri = `${environment.baseUrl}/mal-auth/callback`;
   private codeVerifier = '';
 
   // https://myanimelist.net/apiconfig/references/api/v2#section/Authentication
-  private tokenEndpoint = 'https://myanimelist.net/v1/oauth2/token';
+  // Temp, get proper solution
+  private tokenEndpoint = 'https://cors-anywhere.herokuapp.com/https://myanimelist.net/v1/oauth2/token'
   private mainAuth = 'https://myanimelist.net/v1/oauth2/authorize';
 
   private _user = signal<any | null>(null);
