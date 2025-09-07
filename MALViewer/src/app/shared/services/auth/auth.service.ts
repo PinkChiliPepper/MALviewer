@@ -13,6 +13,7 @@ export class AuthService {
 
   // https://myanimelist.net/apiconfig/references/api/v2#section/Authentication
   // Temp, get proper solution
+  // https://cors-anywhere.herokuapp.com/corsdemo
   private tokenEndpoint = 'https://cors-anywhere.herokuapp.com/https://myanimelist.net/v1/oauth2/token'
   private mainAuth = 'https://myanimelist.net/v1/oauth2/authorize';
 
@@ -30,15 +31,7 @@ export class AuthService {
     for (let i = 0; i < array.length; i++) {
       random += charset[array[i] % charset.length];
     }
-    return btoa(random);
-  }
-
-  // https://datatracker.ietf.org/doc/html/rfc7636#section-4.2
-  private async generateCodeChallenge(verifier: string) {
-    const data = new TextEncoder().encode(verifier);
-    const digest = await crypto.subtle.digest('SHA-256', data);
-    return btoa(String.fromCharCode(...new Uint8Array(digest)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    return random;
   }
 
   async login() {
@@ -59,7 +52,6 @@ export class AuthService {
   }
 
   fetchUserInfo(token: string) {
-    console.log('xxx')
     this.http.get('https://cors-anywhere.herokuapp.com/https://api.myanimelist.net/v2/users/@me', {
       headers: new HttpHeaders({ 'Authorization': `Bearer ${token}` })
     }).subscribe(user => {
