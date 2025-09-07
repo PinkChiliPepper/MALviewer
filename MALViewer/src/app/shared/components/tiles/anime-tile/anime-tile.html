@@ -1,0 +1,7 @@
+<app-base-tile
+  image_url="{{ anime?.images?.jpg?.image_url }}"
+  title="{{  anime?.title_english ?? anime?.title_synonyms?.[0] }}"
+  subtitle="{{ anime?.title_japanese }}"
+  link="{{ this.watchLink }}"
+  topRight="{{ anime?.score }}"
+/>
