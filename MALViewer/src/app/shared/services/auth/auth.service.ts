@@ -47,16 +47,24 @@ export class AuthService {
     this._user.set(null);
   }
 
-  fetchUserInfo(token: string) {
-  this.http.get<any>('http://localhost:3000/user', { headers: { Authorization: `Bearer ${token}` } }).subscribe(
-    (user) => {
-      this._user.set(user);
-    },
-    (error) => {
-      console.error('Error fetching user info', error);
-    }
-  );
-}
+  fetchUserInfo() {
+    const token = localStorage.getItem('access_token');
+    this.http.get<any>('http://localhost:3000/user', { headers: { Authorization: `Bearer ${token}` } }).subscribe(
+      (user) => {
+        this._user.set(user);
+      },
+      (error) => {
+        console.error('Error fetching user info', error);
+      }
+    );
+  }
+
+  fetchUserAnimelist(username: string) {
+    const token = localStorage.getItem('access_token');
+    return this.http.get<any>(`http://localhost:3000/users/${username}/animelist?status=watching`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+  }
 
   exchangeCodeForToken(code: string) {
   const verifier = localStorage.getItem('pkce_verifier') ?? '';
@@ -66,7 +74,7 @@ export class AuthService {
     (tokens) => {
       localStorage.setItem('access_token', tokens.access_token);
       localStorage.setItem('refresh_token', tokens.refresh_token);
-      this.fetchUserInfo(tokens.access_token);
+      this.fetchUserInfo();
     },
     (error) => {
       console.error('Error exchanging code for token', error);

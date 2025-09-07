@@ -18,9 +18,7 @@ const MAL_CLIENT_ID = process.env.MAL_CLIENT_ID;
 const MAL_CLIENT_SECRET = process.env.MAL_CLIENT_SECRET;
 const MAL_REDIRECT_URI = `${process.env.BASE_URL}/mal-auth/callback`;
 const TOKEN_ENDPOINT = 'https://myanimelist.net/v1/oauth2/token';
-const USER_INFO_URL = 'https://api.myanimelist.net/v2/users/@me';
 
-// Exchange authorization code for access token
 app.post('/auth/exchange', async (req, res) => {
   const { code, code_verifier } = req.body;
 
@@ -43,21 +41,15 @@ app.post('/auth/exchange', async (req, res) => {
   }
 });
 
-// Fetch user info using access token
 app.get('/user', async (req, res) => {
   const token = req.headers.authorization?.split(' ')[1]
-
-  if (!token) {
-    return res.status(400).send('No token provided');
-  }
+  if (!token) return res.status(400).send('No token provided');
 
   try {
-    const response = await axios.get(USER_INFO_URL, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+    const url = 'https://api.myanimelist.net/v2/users/@me';
+    const response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${token}`}
     });
-
     res.json(response.data);
   } catch (error) {
     console.error('Error fetching user info', error);
@@ -65,7 +57,26 @@ app.get('/user', async (req, res) => {
   }
 });
 
-// Start the server
+app.get('/users/:username/animelist', async (req, res) => {
+  const { username } = req.params;
+  const { status } = req.query;
+  const token = req.headers.authorization?.split(' ')[1]
+  if (!token) return res.status(400).send('No token provided');
+
+  try {
+    let url = `https://api.myanimelist.net/v2/users/${username}/animelist`;
+    if (status) url += `?status=${status}`;
+
+    const response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${token}`}
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching user animelist', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
