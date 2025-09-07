@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { TileList } from "@shared/components/tile-list/tile-list";
-import { UserService } from '@shared/services/user/user';
+import { TileList } from '@app/shared/components/tile-list/tile-list';
+import { UserService } from '@app/shared/services/user/user';
 
 @Component({
   selector: 'app-user',

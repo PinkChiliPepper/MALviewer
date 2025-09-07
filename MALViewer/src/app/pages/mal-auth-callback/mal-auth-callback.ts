@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '@shared/services/auth/auth.service';
+import { AuthService } from '@app/shared/services/auth/auth.service';
 
 @Component({
   selector: 'app-mal-auth-callback',

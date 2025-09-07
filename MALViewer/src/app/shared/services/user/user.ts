@@ -1,9 +1,8 @@
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AnimeItem, BroadCastDays } from '@shared/services/anime/types';
-import { cacheForFiveMinutes, retryOn429 } from '@shared/services/rxjs-operators';
-import { UserAnimeItem, UserHistoryAPI, UserUpdatesAPI } from '@shared/services/user/types';
-import { catchError, expand, map, Observable, of, reduce, retry, retryWhen, shareReplay, throwError, timer } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { UserAnimeItem, UserUpdatesAPI } from '@app/shared/services/user/types';
+import { cacheForFiveMinutes, retryOn429 } from '@app/shared/services/rxjs-operators';
 
 
 @Injectable({

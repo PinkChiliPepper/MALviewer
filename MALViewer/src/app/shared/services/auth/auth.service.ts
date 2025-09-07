@@ -52,30 +52,29 @@ export class AuthService {
   }
 
   fetchUserInfo(token: string) {
-    this.http.get('https://cors-anywhere.herokuapp.com/https://api.myanimelist.net/v2/users/@me', {
-      headers: new HttpHeaders({ 'Authorization': `Bearer ${token}` })
-    }).subscribe(user => {
+  this.http.get<any>('http://localhost:3000/user', { headers: { Authorization: `Bearer ${token}` } }).subscribe(
+    (user) => {
       this._user.set(user);
-      console.log('user', user)
-    });
-  }
+    },
+    (error) => {
+      console.error('Error fetching user info', error);
+    }
+  );
+}
 
   exchangeCodeForToken(code: string) {
-    const body = new URLSearchParams();
-    const verifier = localStorage.getItem('pkce_verifier') ?? '';
-    console.log(verifier)
-    body.set('client_id', this.clientId);
-    body.set('grant_type', 'authorization_code');
-    body.set('code', code);
-    body.set('redirect_uri', this.redirectUri);
-    body.set('code_verifier', verifier);
+  const verifier = localStorage.getItem('pkce_verifier') ?? '';
+  const body = { code, code_verifier: verifier };
 
-    return this.http.post<any>(this.tokenEndpoint, body.toString(), {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': `Basic ${btoa(`${this.clientId}:${this.clientSecret}`)}`  })
-    }).subscribe(tokens => {
+  this.http.post<any>('http://localhost:3000/auth/exchange', body).subscribe(
+    (tokens) => {
       localStorage.setItem('access_token', tokens.access_token);
       localStorage.setItem('refresh_token', tokens.refresh_token);
       this.fetchUserInfo(tokens.access_token);
-    });
-  }
+    },
+    (error) => {
+      console.error('Error exchanging code for token', error);
+    }
+  );
+}
 }
