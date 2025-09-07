@@ -1,6 +1,7 @@
 <nav class="menu">
   <a routerLink="/" routerLinkActive="active">Home</a>
   <a routerLink="/seasonals" routerLinkActive="active">Seasonals</a>
+  <a routerLink="/user" routerLinkActive="active">My anime</a>
 
   @if (auth.user(); as user) {
   <span>Logged in as {{ user.name }}</span>

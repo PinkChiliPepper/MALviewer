@@ -1,0 +1,6 @@
+<app-base-tile
+  image_url="{{ this.anime?.entry?.images?.jpg?.image_url }}"
+  title="{{ this.anime?.entry?.title }}"
+  link="{{ this.watchLink }}"
+  topRight="{{ `${this.anime?.episodes_seen} / ${this.anime?.episodes_total}` }}"
+/>

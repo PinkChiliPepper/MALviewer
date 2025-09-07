@@ -5,9 +5,13 @@
     <button class="scroll-btn left" (click)="scrollLeft()">◀</button>
 
     <div class="tile-box" #scrollContainer>
-      @for (tile of tiles; track tile.mal_id) {
-      <app-tile [anime]="tile" />
-      }
+      @if (this.tileType === 'user') { @for (tile of userAnimeItemTiles(); track
+      tile.entry.mal_id) {
+      <app-user-anime-tile [anime]="tile" />
+      } } @if (this.tileType === 'anime') { @for (tile of animeItemTiles();
+      track tile.mal_id) {
+      <app-anime-tile [anime]="tile" />
+      } }
     </div>
 
     <button class="scroll-btn right" (click)="scrollRight()">▶</button>

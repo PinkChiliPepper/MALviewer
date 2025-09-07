@@ -3,7 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { MainLayout } from './layout/main-layout/main-layout';
 import { Home } from './pages/home/home';
 import { Seasonals } from './pages/seasonals/seasonals';
-import { MALAuthCallback } from '@pages/mal-auth-callback/mal-auth-callback';
+import { MALAuthCallback } from '@app/pages/mal-auth-callback/mal-auth-callback';
+import { UserComponent } from '@app/pages/user/user';
 
 export const routes: Routes = [
   {
@@ -13,6 +14,7 @@ export const routes: Routes = [
       { path: '', component: Home },
       { path: 'seasonals', component: Seasonals },
       { path: 'mal-auth/callback', component: MALAuthCallback  },
+      { path: 'user', component: UserComponent },
     ]
   }
 ];
