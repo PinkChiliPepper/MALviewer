@@ -22,7 +22,7 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   // https://datatracker.ietf.org/doc/html/rfc7636#section-4.1
-  private generateCodeVerifier(length = 128) {
+  private generateCodeVerifier(length = 96) {
     const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
     let random = '';
     const array = new Uint8Array(length);
@@ -30,7 +30,7 @@ export class AuthService {
     for (let i = 0; i < array.length; i++) {
       random += charset[array[i] % charset.length];
     }
-    return random;
+    return btoa(random);
   }
 
   // https://datatracker.ietf.org/doc/html/rfc7636#section-4.2
@@ -44,9 +44,10 @@ export class AuthService {
   async login() {
     this.codeVerifier = this.generateCodeVerifier();
     localStorage.setItem('pkce_verifier', this.codeVerifier);
-    const codeChallenge = await this.generateCodeChallenge(this.codeVerifier);
+    console.log(this.codeVerifier)
+    const codeChallenge = this.codeVerifier;
 
-    const authUrl = `${this.mainAuth}?response_type=code&client_id=${this.clientId}&redirect_uri=${encodeURIComponent(this.redirectUri)}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
+    const authUrl = `${this.mainAuth}?response_type=code&client_id=${this.clientId}&redirect_uri=${encodeURIComponent(this.redirectUri)}&code_challenge=${codeChallenge}&code_challenge_method=plain`;
 
     window.location.href = authUrl;
   }
@@ -59,7 +60,7 @@ export class AuthService {
 
   fetchUserInfo(token: string) {
     console.log('xxx')
-    this.http.get('https://api.myanimelist.net/v2/users/@me', {
+    this.http.get('https://cors-anywhere.herokuapp.com/https://api.myanimelist.net/v2/users/@me', {
       headers: new HttpHeaders({ 'Authorization': `Bearer ${token}` })
     }).subscribe(user => {
       this._user.set(user);
@@ -78,7 +79,7 @@ export class AuthService {
     body.set('code_verifier', verifier);
 
     return this.http.post<any>(this.tokenEndpoint, body.toString(), {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': `Basic ${btoa(`${this.clientId}:${this.clientSecret}`)}`  })
     }).subscribe(tokens => {
       localStorage.setItem('access_token', tokens.access_token);
       localStorage.setItem('refresh_token', tokens.refresh_token);
