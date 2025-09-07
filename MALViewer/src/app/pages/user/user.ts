@@ -18,7 +18,7 @@ export class UserComponent {
     const userUpdates$ = this.userService.getUserUpdates();
     this.userUpdates = toSignal(userUpdates$, { initialValue: [] });
 
-    const userAnimelist$ = this.authService.fetchUserAnimelist('PinkChiliPepper');
+    const userAnimelist$ = this.userService.getUserAnimelist();
     this.userAnimelist = toSignal(userAnimelist$, { initialValue: [] });
   }
 }

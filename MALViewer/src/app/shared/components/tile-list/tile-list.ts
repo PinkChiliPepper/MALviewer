@@ -18,6 +18,7 @@ export class TileList {
   @Input() tileType: 'anime' | 'user' = 'anime'
 
   userAnimeItemTiles(): UserAnimeItem[] {
+    console.log(this.tiles)
     return this.tiles as UserAnimeItem[];
   }
 

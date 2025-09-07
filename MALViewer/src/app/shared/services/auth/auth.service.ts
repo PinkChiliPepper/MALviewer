@@ -33,7 +33,6 @@ export class AuthService {
   async login() {
     this.codeVerifier = this.generateCodeVerifier();
     localStorage.setItem('pkce_verifier', this.codeVerifier);
-    console.log(this.codeVerifier)
     const codeChallenge = this.codeVerifier;
 
     const authUrl = `${this.mainAuth}?response_type=code&client_id=${this.clientId}&redirect_uri=${encodeURIComponent(this.redirectUri)}&code_challenge=${codeChallenge}&code_challenge_method=plain`;
