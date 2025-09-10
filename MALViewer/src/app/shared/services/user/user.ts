@@ -13,6 +13,7 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   private baseUrl = 'https://api.jikan.moe/v4';
+  private userUrl = 'https://malviewer.onrender.com';
   private username = 'PinkChiliPepper'
   private userUpdates$?: Observable<UserAnimeItem[]>;
   private userAnimeList$?: Observable<UserAnimeItem[]>;
@@ -32,7 +33,7 @@ export class UserService {
     const username = 'PinkChiliPepper'
     if (!this.userAnimeList$) {
       const token = localStorage.getItem('access_token');
-      return this.http.get<any>(`http://localhost:3000/users/${username}/animelist?status=watching`, {
+      return this.http.get<any>(`${this.userUrl}/users/${username}/animelist?status=watching`, {
         headers: { Authorization: `Bearer ${token}` }
       }).pipe(
         map(response => response.data),
