@@ -69,7 +69,7 @@ export class AuthService {
   const verifier = localStorage.getItem('pkce_verifier') ?? '';
   const body = { code, code_verifier: verifier };
 
-  this.http.post<any>('http://localhost:3000/auth/exchange', body).subscribe(
+  this.http.post<any>('https://malviewer.onrender.com/auth/exchange', body).subscribe(
     (tokens) => {
       localStorage.setItem('access_token', tokens.access_token);
       localStorage.setItem('refresh_token', tokens.refresh_token);

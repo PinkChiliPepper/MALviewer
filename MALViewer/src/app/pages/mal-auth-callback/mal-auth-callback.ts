@@ -14,7 +14,6 @@ export class MALAuthCallback implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log('!!!!')
     this.route.queryParams.subscribe(params => {
       const code =  decodeURIComponent(params['code'] ?? '');
       if (code) {
