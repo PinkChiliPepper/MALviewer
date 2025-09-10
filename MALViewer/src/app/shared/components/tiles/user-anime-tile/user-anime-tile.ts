@@ -18,7 +18,7 @@ export class UserAnimeTile {
   ngOnInit(): void {
     if (!this.anime) return
 
-    const linkName = this.anime.entry.title?.toLowerCase().replace(/\s+/g, '-') ?? '';
-    this.watchLink = `${this.baseWatchLink}${linkName}+episode ${this.anime.episodes_seen + 1}`;
+    const linkName = this.anime.node.title?.toLowerCase().replace(/\s+/g, '-') ?? '';
+    this.watchLink = `${this.baseWatchLink}${linkName}+episode 1`;
   }
 }
