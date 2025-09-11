@@ -8,4 +8,5 @@ import { AnimeItem } from '@shared/services/anime/types';
   styleUrl: './circular-loader.scss'
 })
 export class CircularLoader {
+  @Input() text: string = ''
 }

@@ -7,5 +7,9 @@
     [tiles]="topAnime() ?? []"
     [isLoading]="topAnime() === null"
   />
-  <app-tile-list title="Current season" [tiles]="currentSeason() ?? []" />
+  <app-tile-list
+    title="Current season"
+    [tiles]="currentSeason() ?? []"
+    [isLoading]="currentSeason() === null"
+  />
 </div>

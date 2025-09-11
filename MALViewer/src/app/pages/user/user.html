@@ -1,3 +1,8 @@
 <div style="display: flex; flex-direction: column; gap: 2rem">
-  <app-tile-list title="Watching" [tiles]="userAnimelist()" tileType="user" />
+  <app-tile-list
+    title="Watching"
+    [tiles]="userAnimelist() ?? []"
+    tileType="user"
+    [isLoading]="userAnimelist() === null"
+  />
 </div>

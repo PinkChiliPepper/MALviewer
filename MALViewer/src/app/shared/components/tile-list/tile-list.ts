@@ -14,7 +14,7 @@ import { UserAnimeItem } from '@shared/services/user/types';
 })
 export class TileList {
   @Input() title: string = ''
-  @Input() isLoading: boolean = true
+  @Input() isLoading: boolean = false
   @Input() tiles: AnimeItem[] | UserAnimeItem[] = []
   @Input() tileType: 'anime' | 'user' = 'anime'
 
