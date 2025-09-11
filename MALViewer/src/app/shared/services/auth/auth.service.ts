@@ -2,7 +2,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'environments/environment';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, finalize } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -16,6 +16,9 @@ export class AuthService {
 
   private _user = signal<any | null>(null);
   user = this._user.asReadonly();
+
+  private _isAuthorizing = signal(false);
+  isAuthorizing = this._isAuthorizing.asReadonly();
 
   constructor(private http: HttpClient) {}
 
@@ -60,10 +63,13 @@ export class AuthService {
   }
 
   exchangeCodeForToken(code: string) {
+  this._isAuthorizing.set(true);
   const verifier = localStorage.getItem('pkce_verifier') ?? '';
   const body = { code, code_verifier: verifier };
 
-  this.http.post<any>(`${this.serverURL}/auth/exchange`, body).subscribe(
+  this.http.post<any>(`${this.serverURL}/auth/exchange`, body)
+  .pipe(finalize(() => { this._isAuthorizing.set(false) }))
+  .subscribe(
     (tokens) => {
       localStorage.setItem('access_token', tokens.access_token);
       localStorage.setItem('refresh_token', tokens.refresh_token);

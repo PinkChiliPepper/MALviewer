@@ -28,10 +28,12 @@
     width: 225px;
     overflow: hidden;
     background-color: black;
+    transform: scale(1.02);
 
     &:hover {
         img {
           filter: blur(3px);
+          transform: scale(1.025);
         }
       }
   }
