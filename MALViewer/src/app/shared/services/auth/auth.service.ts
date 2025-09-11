@@ -7,6 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private clientId = environment.MALClientId;
+  private serverURL = environment.serverUrl;
   private redirectUri = `${environment.baseUrl}/mal-auth/callback`;
   private codeVerifier = '';
 
@@ -48,7 +49,7 @@ export class AuthService {
 
   fetchUserInfo() {
     const token = localStorage.getItem('access_token');
-    this.http.get<any>('http://localhost:3000/user', { headers: { Authorization: `Bearer ${token}` } }).subscribe(
+    this.http.get<any>(`${this.serverURL}/user`, { headers: { Authorization: `Bearer ${token}` } }).subscribe(
       (user) => {
         this._user.set(user);
       },
@@ -58,18 +59,11 @@ export class AuthService {
     );
   }
 
-  fetchUserAnimelist(username: string) {
-    const token = localStorage.getItem('access_token');
-    return this.http.get<any>(`http://localhost:3000/users/${username}/animelist?status=watching`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-  }
-
   exchangeCodeForToken(code: string) {
   const verifier = localStorage.getItem('pkce_verifier') ?? '';
   const body = { code, code_verifier: verifier };
 
-  this.http.post<any>('https://malviewer.onrender.com/auth/exchange', body).subscribe(
+  this.http.post<any>(`${this.serverURL}/auth/exchange`, body).subscribe(
     (tokens) => {
       localStorage.setItem('access_token', tokens.access_token);
       localStorage.setItem('refresh_token', tokens.refresh_token);
