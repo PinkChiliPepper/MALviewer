@@ -3,17 +3,13 @@ import axios from "axios";
 import dotenv from "dotenv";
 import cors from "cors";
 
-// Load environment variables
 dotenv.config();
-
 const app = express();
 const port = process.env.PORT || 3000;
-
-// Middleware to handle CORS
 app.use(cors());
 app.use(express.json());
 
-// MyAnimeList OAuth endpoints and client credentials
+const API_URL = process.env.API_URL;
 const MAL_CLIENT_ID = process.env.MAL_CLIENT_ID;
 const MAL_CLIENT_SECRET = process.env.MAL_CLIENT_SECRET;
 const MAL_REDIRECT_URI = `${process.env.BASE_URL}/mal-auth/callback`;
@@ -46,7 +42,7 @@ app.post("/auth/exchange", async (req, res) => {
     res.json(response.data);
   } catch (error) {
     console.error("Error exchanging code for token", error);
-    res.status(500).send(error);
+    res.status(500).send("Internal server error");
   }
 });
 
@@ -55,14 +51,14 @@ app.get("/user", async (req, res) => {
   if (!token) return res.status(400).send("No token provided");
 
   try {
-    const url = "https://api.myanimelist.net/v2/users/@me";
+    const url = `${API_URL}/users/@me`;
     const response = await axios.get(url, {
       headers: { Authorization: `Bearer ${token}` },
     });
     res.json(response.data);
   } catch (error) {
     console.error("Error fetching user info", error);
-    res.status(500).send(error);
+    res.status(500).send("Internal server error");
   }
 });
 
@@ -73,7 +69,7 @@ app.get("/users/:username/animelist", async (req, res) => {
   if (!token) return res.status(400).send("No token provided");
 
   try {
-    let url = `https://api.myanimelist.net/v2/users/${username}/animelist`;
+    let url = `${API_URL}/users/${username}/animelist`;
     if (status) url += `?status=${status}`;
 
     const response = await axios.get(url, {
@@ -82,7 +78,7 @@ app.get("/users/:username/animelist", async (req, res) => {
     res.json(response.data);
   } catch (error) {
     console.error("Error fetching user animelist", error);
-    res.status(500).send(error);
+    res.status(500).send("Internal server error");
   }
 });
 
