@@ -7,6 +7,13 @@
   gap: 5rem;
   padding: 1rem 0%;
   z-index: 1000;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $color-1;
+  margin-left: -1rem;
+  margin-right: -1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 
   a {
     text-decoration: none;
@@ -17,5 +24,18 @@
     &:hover {
       color: $color-2-light;
     }
+  }
+
+  .logged-in-user {
+    color: $color-4;
+  }
+
+  button {
+    background-color: $color-2;
+    padding: 0.75rem;
+    border-radius: 12px;
+    font-weight: 700;
+    color: $color-1;
+    font-size: 0.85rem;
   }
 }

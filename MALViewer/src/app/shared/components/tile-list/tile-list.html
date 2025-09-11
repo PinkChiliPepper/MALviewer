@@ -6,12 +6,21 @@
 
     <div class="tile-box" #scrollContainer>
       @if (isLoading) {
-      <div style="align-self: center; justify-self: center">
-        <app-circular-loader />
-      </div>
-      } @else { @for (tile of tiles; track tile.mal_id) {
-      <app-tile [anime]="tile" />
-      }}
+        <div style="align-self: center; justify-self: center">
+          <app-circular-loader />
+        </div>
+      } @else { 
+        @if (this.tileType === 'user') {
+          @for (tile of userAnimeItemTiles(); track tile.node.id) {
+            <app-user-anime-tile [anime]="tile" />
+          }
+        } 
+        @if (this.tileType === 'anime') { 
+          @for (tile of animeItemTiles(); track tile.mal_id) {
+            <app-anime-tile [anime]="tile" />
+          }
+        }
+      }
     </div>
 
     <button class="scroll-btn right" (click)="scrollRight()">▶</button>

@@ -1,4 +1,21 @@
 <nav class="menu">
-  <a routerLink="/" routerLinkActive="active">Home</a>
-  <a routerLink="/seasonals" routerLinkActive="active">Seasonals</a>
+  <div style="display: flex; flex-direction: row; gap: 4rem">
+    <a routerLink="/" routerLinkActive="active">Home</a>
+    <a routerLink="/seasonals" routerLinkActive="active">Seasonals</a>
+    @if (auth.user(); as user) {
+    <a routerLink="/user" routerLinkActive="active">My anime</a>
+    }
+  </div>
+
+  <div
+    style="display: flex; flex-direction: row; gap: 2rem; align-items: center"
+  >
+    @if (auth.user(); as user) {
+    <span class="logged-in-user">Logged in as {{ user.name }}</span>
+    <button (click)="logout()">Log out</button>
+    } @else {
+    <div>{{ auth.user()?.name }}</div>
+    <button (click)="login()">Log in</button>
+    }
+  </div>
 </nav>
