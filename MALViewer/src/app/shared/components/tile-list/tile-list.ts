@@ -1,5 +1,6 @@
 import { NgStyle } from '@angular/common';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { CircularLoader } from '@app/shared/components/loaders/circular-loader/circular-loader';
 import { AnimeTile } from '@shared/components/tiles/anime-tile/anime-tile';
 import { UserAnimeTile } from '@shared/components/tiles/user-anime-tile/user-anime-tile';
 import { AnimeItem } from '@shared/services/anime/types';
@@ -7,13 +8,13 @@ import { UserAnimeItem } from '@shared/services/user/types';
 
 @Component({
   selector: 'app-tile-list',
-  imports: [AnimeTile, UserAnimeTile],
+  imports: [AnimeTile, UserAnimeTile, CircularLoader],
   templateUrl: './tile-list.html',
   styleUrl: './tile-list.scss'
 })
 export class TileList {
   @Input() title: string = ''
-  @Input() isLoading: boolean = true
+  @Input() isLoading: boolean = false
   @Input() tiles: AnimeItem[] | UserAnimeItem[] = []
   @Input() tileType: 'anime' | 'user' = 'anime'
 

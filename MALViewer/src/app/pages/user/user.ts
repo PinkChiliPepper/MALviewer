@@ -16,9 +16,9 @@ export class UserComponent {
 
   constructor(private userService: UserService, private authService: AuthService) {
     const userUpdates$ = this.userService.getUserUpdates();
-    this.userUpdates = toSignal(userUpdates$, { initialValue: [] });
+    this.userUpdates = toSignal(userUpdates$, { initialValue: null });
 
     const userAnimelist$ = this.userService.getUserAnimelist();
-    this.userAnimelist = toSignal(userAnimelist$, { initialValue: [] });
+    this.userAnimelist = toSignal(userAnimelist$, { initialValue: null });
   }
 }

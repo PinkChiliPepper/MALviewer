@@ -10,12 +10,14 @@
     [ngStyle]="{
       width: '100%',
       maxWidth: 'min(90dvw, 1980px)',
-      marginBottom: '50px'
+      marginBottom: '50px',
     }"
   >
     <app-menu></app-menu>
     @if (this.auth.isAuthorizing()) {
-    <div style="color: white">Logging you in...</div>
+    <div style="min-height: 500px">
+      <app-circular-loader text="Logging you in..." />
+    </div>
     } @else {
     <router-outlet></router-outlet>
     }

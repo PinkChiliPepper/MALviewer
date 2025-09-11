@@ -2,6 +2,14 @@
   <div style="display: flex; justify-content: center; padding: 40px 0px">
     <h1>Find all your anime in <strong>one place</strong></h1>
   </div>
-  <app-tile-list title="Top anime" [tiles]="topAnime() ?? []" />
-  <app-tile-list title="Current season" [tiles]="currentSeason() ?? []" />
+  <app-tile-list
+    title="Top anime"
+    [tiles]="topAnime() ?? []"
+    [isLoading]="topAnime() === null"
+  />
+  <app-tile-list
+    title="Current season"
+    [tiles]="currentSeason() ?? []"
+    [isLoading]="currentSeason() === null"
+  />
 </div>
