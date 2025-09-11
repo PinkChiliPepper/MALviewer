@@ -1,9 +1,8 @@
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AnimeItem, BroadCastDays } from '@shared/services/anime/types';
-import { cacheForFiveMinutes, retryOn429 } from '@shared/services/rxjs-operators';
-import { UserAnimeItem, UserHistoryAPI, UserUpdatesAPI } from '@shared/services/user/types';
-import { catchError, expand, map, Observable, of, reduce, retry, retryWhen, shareReplay, throwError, timer } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { UserAnimeItem, UserUpdatesAPI } from '@app/shared/services/user/types';
+import { cacheForFiveMinutes, retryOn429 } from '@app/shared/services/rxjs-operators';
 
 
 @Injectable({
@@ -14,8 +13,10 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   private baseUrl = 'https://api.jikan.moe/v4';
+  private userUrl = 'https://malviewer.onrender.com';
   private username = 'PinkChiliPepper'
   private userUpdates$?: Observable<UserAnimeItem[]>;
+  private userAnimeList$?: Observable<UserAnimeItem[]>;
 
   getUserUpdates(): Observable<UserAnimeItem[]> {
     if (!this.userUpdates$) {
@@ -26,6 +27,21 @@ export class UserService {
       );
     }
     return this.userUpdates$;
+  }
+
+  getUserAnimelist(): Observable<UserAnimeItem[]> {
+    const username = 'PinkChiliPepper'
+    if (!this.userAnimeList$) {
+      const token = localStorage.getItem('access_token');
+      return this.http.get<any>(`${this.userUrl}/users/${username}/animelist?status=watching`, {
+        headers: { Authorization: `Bearer ${token}` }
+      }).pipe(
+        map(response => response.data),
+        cacheForFiveMinutes(),
+        retryOn429(5),
+      )
+    }
+    return this.userAnimeList$;
   }
 
 }

@@ -13,10 +13,12 @@ import { UserAnimeItem } from '@shared/services/user/types';
 })
 export class TileList {
   @Input() title: string = ''
+  @Input() isLoading: boolean = true
   @Input() tiles: AnimeItem[] | UserAnimeItem[] = []
   @Input() tileType: 'anime' | 'user' = 'anime'
 
   userAnimeItemTiles(): UserAnimeItem[] {
+    console.log(this.tiles)
     return this.tiles as UserAnimeItem[];
   }
 

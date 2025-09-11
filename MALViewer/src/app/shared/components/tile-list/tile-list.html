@@ -6,7 +6,7 @@
 
     <div class="tile-box" #scrollContainer>
       @if (this.tileType === 'user') { @for (tile of userAnimeItemTiles(); track
-      tile.entry.mal_id) {
+      tile.node.id) {
       <app-user-anime-tile [anime]="tile" />
       } } @if (this.tileType === 'anime') { @for (tile of animeItemTiles();
       track tile.mal_id) {
