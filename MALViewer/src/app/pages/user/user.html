@@ -5,4 +5,18 @@
     tileType="user"
     [isLoading]="userAnimelist() === null"
   />
+
+  <app-tile-list
+    title="Plan to watch"
+    [tiles]="userPlanToWatch() ?? []"
+    tileType="user"
+    [isLoading]="userPlanToWatch() === null"
+  />
+
+  <app-tile-list
+    title="Completed"
+    [tiles]="userCompleted() ?? []"
+    tileType="user"
+    [isLoading]="userCompleted() === null"
+  />
 </div>

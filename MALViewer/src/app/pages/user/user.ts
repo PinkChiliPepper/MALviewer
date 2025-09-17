@@ -13,6 +13,8 @@ import { UserService } from '@app/shared/services/user/user';
 export class UserComponent {
   userUpdates;
   userAnimelist;
+  userPlanToWatch;
+  userCompleted;
 
   constructor(private userService: UserService, private authService: AuthService) {
     const userUpdates$ = this.userService.getUserUpdates();
@@ -20,5 +22,11 @@ export class UserComponent {
 
     const userAnimelist$ = this.userService.getUserAnimelist();
     this.userAnimelist = toSignal(userAnimelist$, { initialValue: null });
+
+    const userPlanToWatch$ = this.userService.getUserPlanToWatch();
+    this.userPlanToWatch = toSignal(userPlanToWatch$, { initialValue: null });
+
+    const userCompleted$ = this.userService.getUserCompleted();
+    this.userCompleted = toSignal(userCompleted$, { initialValue: null });
   }
 }
